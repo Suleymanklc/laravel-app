@@ -2,7 +2,6 @@ name: Docker
 on:
   push:
     branches: [ "main" ]
-    tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ "main" ]
 
@@ -43,8 +42,8 @@ jobs:
         id: build-and-push-laravel
         uses: docker/build-push-action@v5
         with:
-          context: .  # Path to the cloned repository
-          file: Dockerfile.laravel  # Path to the specific Dockerfile
+          context: .
+          file: Dockerfile.larave
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/laravel:latest
 
@@ -52,8 +51,8 @@ jobs:
         id: build-and-push-nginx
         uses: docker/build-push-action@v5
         with:
-          context: .  # Path to the cloned repository
-          file: Dockerfile.nginx  # Path to the specific Dockerfile
+          context: . 
+          file: Dockerfile.nginx
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/nginx:latest
   
