@@ -1,7 +1,8 @@
 name: Docker
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
 env:
   REGISTRY: docker.io
   IMAGE_NAME: ${{ github.username }}
