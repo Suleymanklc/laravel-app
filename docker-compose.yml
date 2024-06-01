@@ -1,11 +1,9 @@
-version: '3.8'
+#version: '3.8'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile.laravel
-    container_name: laravel_app
+    image: pisko0808/laravel:latest
+    container_name: laravel
     restart: unless-stopped
     ports:
       - "9000:9000"
@@ -17,11 +15,8 @@ services:
     networks:
       - app-network
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile.nginx
-    image: nginx:alpine
-    container_name: nginx_web
+    image: pisko0808/nginx:latest
+    container_name: nginx
     restart: unless-stopped
     ports:
       - "80:80"
