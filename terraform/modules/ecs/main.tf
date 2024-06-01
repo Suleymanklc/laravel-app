@@ -1,63 +1,37 @@
-provider "aws" {
-  region = "us-west-2"
+resource "aws_ecs_cluster" "main" {
+  name = "main-ecs-cluster"
 }
 
-# ECS Cluster
-resource "aws_ecs_cluster" "ecs_cluster" {
-  name = var.cluster_name
-}
-
-# ECS Task Definition
-resource "aws_ecs_task_definition" "task_definition" {
-  family                = var.task_definition_name
-  network_mode          = "awsvpc"
+resource "aws_ecs_task_definition" "main" {
+  family                   = "main-task"
+  network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                   = "256"
-  memory                = "512"
+  cpu                      = "256"
+  memory                   = "512"
 
-  container_definitions = jsonencode([{
-    name  = var.container_name
-    image = var.container_image
-    essential = true
-    portMappings = [{
-      containerPort = var.container_port
-      hostPort      = var.container_port
-    }]
-  }])
+  container_definitions = jsonencode([
+    {
+      name      = "main-container",
+      image     = "nginx",
+      essential = true,
+      portMappings = [
+        {
+          containerPort = 443
+          hostPort      = 443
+        }
+      ]
+    }
+  ])
 }
 
-# ECS Service
-resource "aws_ecs_service" "ecs_service" {
-  name            = "${var.cluster_name}-service"
-  cluster         = aws_ecs_cluster.ecs_cluster.id
-  task_definition = aws_ecs_task_definition.task_definition.arn
+resource "aws_ecs_service" "main" {
+  name            = "main-service"
+  cluster         = aws_ecs_cluster.main.id
+  task_definition = aws_ecs_task_definition.main.arn
   desired_count   = 1
   launch_type     = "FARGATE"
-
   network_configuration {
-    subnets          = var.subnet_ids
-    security_groups  = [aws_security_group.ecs_sg.id]
-    assign_public_ip = true
-  }
-}
-
-# Security Group
-resource "aws_security_group" "ecs_sg" {
-  name        = "${var.cluster_name}-sg"
-  description = "Allow inbound traffic to ECS tasks"
-  vpc_id      = var.vpc_id
-
-  ingress {
-    from_port   = var.container_port
-    to_port     = var.container_port
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    subnets = var.private_subnets
+    security_groups = [var.security_group_id]
   }
 }
