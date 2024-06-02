@@ -1,30 +1,12 @@
-
 module "vpc" {
-  source = "./modules/vpc"
-  vpc_cidr = "10.0.0.0/16"
-}
+  source = "terraform-aws-modules/vpc/aws"
 
-module "network" {
-  source = "./modules/network"
-  vpc_id = module.vpc.vpc_id
-  public_subnet_cidrs = ["10.0.1.0/24", "10.0.2.0/24"]
-  private_subnet_cidrs = ["10.0.3.0/24", "10.0.4.0/24"]
-  availability_zones = ["us-west-2a", "us-west-2b"]
-  internet_gateway_id = module.vpc.internet_gateway_id
-  
-}
-
-module "ecs" {
-  source = "./modules/ecs"
-  vpc_id = module.vpc.vpc_id
-  public_subnets = module.network.public_subnets
-  private_subnets = module.network.private_subnets
-  security_group_id = module.network.security_group_id
-  depends_on = [null_resource.generate_self_signed_certificate]
-  
-}
-resource "null_resource" "generate_self_signed_certificate" {
-  provisioner "local-exec" {
-    command = "../scripts/generate_certificate.sh"
-  }
+  name               = var.vpc_name
+  cidr               = var.vpc_cidr
+  azs                = var.availability_zones
+  private_subnets    = var.private_subnet_cidrs
+  public_subnets     = var.public_subnet_cidrs
+  enable_nat_gateway = var.enable_nat_gateway
+  enable_vpn_gateway = var.enable_vpn_gateway
+  tags               = var.vpc_tags
 }
