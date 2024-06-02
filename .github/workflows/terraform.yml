@@ -1,20 +1,11 @@
 name: Terraform Apply
 
 on:
-  workflow_call:
-    inputs:
-      aws_access_key_id:
-        description: 'access key'
-        required: true
-        type: string
-      aws_secret_key:
-        description: 'aws secret'
-        required: true
-        type: string      
-      aws_region:
-        description: 'aws_region'
-        required: true
-        type: string
+  push:
+    branches:
+      - main
+    paths:
+      - './terraform/*'
 
 jobs:
   terraform:
