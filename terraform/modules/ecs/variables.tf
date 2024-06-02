@@ -1,19 +1,14 @@
-variable "vpc_id" {
-  description = "The ID of the VPC"
+variable "subnets" {
+  description = "The subnets to deploy the ECS service into"
+  type        = list(string)
+}
+
+variable "security_group" {
+  description = "The security group to assign to the ECS service"
   type        = string
 }
 
-variable "public_subnets" {
-  description = "The public subnets for the ECS service"
-  type        = list(string)
-}
-
-variable "private_subnets" {
-  description = "The private subnets for the ECS service"
-  type        = list(string)
-}
-
-variable "security_group_id" {
-  description = "The security group ID for the ECS service"
+variable "target_group_arn" {
+  description = "The ARN of the target group to attach the ECS service to"
   type        = string
 }
