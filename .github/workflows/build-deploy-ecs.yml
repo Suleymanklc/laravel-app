@@ -1,8 +1,21 @@
-name: Deploy to Amazon ECS
+name: ECS Container Deploy
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_call:
+    inputs:
+      aws_access_key_id:
+        description: 'access key'
+        required: true
+        type: string
+      aws_secret_key:
+        description: 'aws secret'
+        required: true
+        type: string      
+      aws_region:
+        description: 'aws_region'
+        required: true
+        type: string
+
 
 env:
   AWS_REGION: MY_AWS_REGION                   # set this to your preferred AWS region, e.g. us-west-1
