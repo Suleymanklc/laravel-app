@@ -5,6 +5,7 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 4.0"  # Specify the version of the AWS provider
     }
+    local = {}
   }
   
   required_version = ">= 1.0.0"  # Specify the version of Terraform
