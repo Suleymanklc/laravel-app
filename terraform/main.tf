@@ -13,14 +13,14 @@ module "vpc" {
 }
 
 module "ecs" {
-  source = "./ecs"
+  source = "./modules/ecs"
 
-  cluster_name          = "laravel-ecs-cluster"
-  task_family           = "ecs-task"
-  task_cpu              = "256"
-  task_memory           = "512"
-  container_definitions = jsonencode([{
-    name      = "nginx"
+  cluster_name          = var.cluster_name
+  task_family           = var.task_family
+  task_cpu              = var.task_cpu
+  task_memory           = var.task_memory
+    container_definitions = jsonencode([{
+    name      = "my-container"
     image     = "nginx"
     essential = true
     portMappings = [{
@@ -28,25 +28,33 @@ module "ecs" {
       hostPort      = 80
     }]
   }])
-  service_name   = "laravel-ecs-service"
+  service_name   = var.service_name
   desired_count  = 1
   subnets        = module.vpc.private_subnets
   vpc_id         = module.vpc.vpc_id
-  target_group_arn = module.alb.target_group_arn
+}
+module "security_group" {
+  source = "./modules/sg"
+
+  alb_sg_name = var.alb_sg_name
+  vpc_id      = module.vpc.vpc_id
+}
+module "cert" {
+  source = "./modules/cert"
+  domain_name = var.domain_name
+  
 }
 module "alb" {
-  source = "./alb"
-
+  source = "./modules/alb"
   name              = "laravel-alb"
-  security_group_id = aws_security_group.alb_sg.id
+  security_group_id = module.security_group.alb_sg_id
   subnets           = module.vpc.public_subnets
   vpc_id            = module.vpc.vpc_id
   target_group_port = 80
   listener_http_port = 80
   listener_https_port = 443
-  certificate_arn   = module.self_signed_cert.certificate_pem
-}
-module "self_signed_cert" {
-  source      = "./self_signed_cert_module"
-  domain_name = "example.com"
+  subject_alternative_names = [var.subject_alternative_names]
+  domain_name = var.domain_name 
+  certificate_arn = module.cert.arn
+  depends_on = [ module.cert ]
 }

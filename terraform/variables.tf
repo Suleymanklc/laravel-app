@@ -1,4 +1,47 @@
+variable "cluster_name" {
+  description = "The name of the VPC"
+  type        = string
+  default     = "my-vpc"
+}
+variable "subject_alternative_names" {
+  description = "The name of the ECS cluster"
+  type        = string
+}
+variable "domain_name" {
+  description = "The name of the ECS cluster"
+  type        = string
+}
 variable "vpc_name" {
+  description = "The name of the VPC"
+  type        = string
+  default     = "my-vpc"
+}
+
+variable "task_cpu" {
+  description = "The name of the VPC"
+  type        = string
+  default     = "my-vpc"
+}
+variable "task_memory" {
+  description = "The name of the VPC"
+  type        = string
+  default     = "my-vpc"
+}
+variable "service_name" {
+  description = "The name of the VPC"
+  type        = string
+  default     = "my-vpc"
+}
+variable "task_family" {
+  description = "The name of the VPC"
+  type        = string
+  default     = "my-vpc"
+}
+
+
+
+
+variable "alb_sg_name" {
   description = "The name of the VPC"
   type        = string
   default     = "my-vpc"

@@ -1,5 +1,13 @@
 # alb_module/variables.tf
 
+variable "domain_name" {
+  description = "The name of the ALB"
+  type        = string
+}
+variable "subject_alternative_names" {
+  description = "The name of the ALB"
+  type        = string
+}
 variable "name" {
   description = "The name of the ALB"
   type        = string

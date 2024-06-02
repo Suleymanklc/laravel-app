@@ -1,4 +1,3 @@
-# alb_module/main.tf
 
 resource "aws_lb" "this" {
   name               = var.name
@@ -10,6 +9,7 @@ resource "aws_lb" "this" {
   tags = {
     Name = var.name
   }
+  depends_on = [  var.certificate_arn ]
 }
 
 resource "aws_lb_target_group" "this" {
@@ -31,6 +31,7 @@ resource "aws_lb_target_group" "this" {
   tags = {
     Name = var.name
   }
+  depends_on = [  var.certificate_arn ]
 }
 
 resource "aws_lb_listener" "http_listener" {
@@ -42,6 +43,7 @@ resource "aws_lb_listener" "http_listener" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.this.arn
   }
+  depends_on = [  var.certificate_arn]
 }
 
 resource "aws_lb_listener" "https_listener" {
@@ -55,5 +57,12 @@ resource "aws_lb_listener" "https_listener" {
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.this.arn
+
   }
+  depends_on = [  var.certificate_arn ]
+  
+}
+resource "aws_lb_listener_certificate" "laravel_acm" {
+  listener_arn    = aws_lb_listener.https_listener.arn
+  certificate_arn = var.certificate_arn
 }
