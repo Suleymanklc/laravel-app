@@ -31,13 +31,13 @@ jobs:
         run: terraform init
         working-directory: ./terraform
 
-      - name: Terraform Plan
-        run: terraform plan -out=tfplan
+      - name: Terraform Plan 
+        run: terraform plan -out=tfplan -var-file="laravel.tfvars"
 
       #- name: Terraform Apply
       #  if: github.ref == 'refs/heads/main'
-      #  run: terraform apply -auto-approve tfplan
-      
+      #  run: terraform apply -auto-approve tfplan -var-file="laravel.tfvars"
+       
   call-reusable-workflow:
     uses: ./.github/workflows/build-deploy-ecs.yml
     secrets:
