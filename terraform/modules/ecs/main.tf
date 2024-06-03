@@ -12,7 +12,19 @@ resource "aws_ecs_task_definition" "ecs_task" {
   container_definitions = var.container_definitions
 }
 
+resource "aws_ecs_service" "larevel" {
+  name            = "${var.service_name}-service"
+  cluster         = aws_ecs_cluster.ecs_cluster.id
+  task_definition = aws_ecs_task_definition.ecs_task.arn
+  desired_count   = var.desired_count
 
+  network_configuration {
+    subnets         = var.subnets
+    security_groups = [aws_security_group.ecs_service_sg.id]
+  }
+
+  launch_type = "FARGATE"
+}
 resource "aws_security_group" "ecs_service_sg" {
   name        = "${var.service_name}-sg"
   description = "Security group for ECS service"
