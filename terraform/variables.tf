@@ -1,7 +1,7 @@
 variable "cluster_name" {
-  description = "The name of the VPC"
+  description = "The name of the ECS cluster"
   type        = string
-  default     = "my-vpc"
+  default     = ""
 }
 variable "ecr_name" {
   description = "The name of the ecr"
@@ -19,28 +19,28 @@ variable "domain_name" {
 variable "vpc_name" {
   description = "The name of the VPC"
   type        = string
-  default     = "my-vpc"
+  default     = ""
 }
 
 variable "task_cpu" {
   description = "The name of the VPC"
   type        = string
-  default     = "my-vpc"
+  default     = ""
 }
 variable "task_memory" {
   description = "The name of the VPC"
   type        = string
-  default     = "my-vpc"
+  default     = ""
 }
 variable "service_name" {
-  description = "The name of the VPC"
+  description = "The name of the ecs name"
   type        = string
   default     = "ecs"
 }
 variable "task_family" {
-  description = "The name of the VPC"
+  description = "The name of the task_family"
   type        = string
-  default     = "my-vpc"
+  default     = "laravel"
 }
 
 

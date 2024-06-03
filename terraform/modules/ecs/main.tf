@@ -3,7 +3,7 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 }
 
 resource "aws_ecs_task_definition" "ecs_task" {
-  family                   = var.task_family
+  family                   = var.service_name
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.task_cpu
@@ -13,7 +13,7 @@ resource "aws_ecs_task_definition" "ecs_task" {
 }
 
 resource "aws_ecs_service" "larevel" {
-  name            = "${var.service_name}-laravel"
+  name            = "${var.service_name}-api-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.ecs_task.arn
   desired_count   = var.desired_count
@@ -26,7 +26,7 @@ resource "aws_ecs_service" "larevel" {
   launch_type = "FARGATE"
 }
 resource "aws_ecs_service" "nginx" {
-  name            = "${var.service_name}-nginx"
+  name            = "${var.service_name}-nginx-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.ecs_task.arn
   desired_count   = var.desired_count

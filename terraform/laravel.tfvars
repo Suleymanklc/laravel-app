@@ -15,5 +15,6 @@ cluster_name          = "laravel-ecs-cluster"
 task_cpu              = "256"
 task_memory           = "512"
 subject_alternative_names = "*.laravelmywork.com"
+service_name = laravel
 
 
