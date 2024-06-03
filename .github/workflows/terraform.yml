@@ -39,3 +39,11 @@ jobs:
       #- name: Terraform Apply
       #  if: github.ref == 'refs/heads/main'
       #  run: terraform apply -auto-approve tfplan
+      
+  call-workflow-passing-data:
+    uses: .github/build-deploy-ecs.yml
+    with:
+      aws_region : ${{ env.aws_region }}
+    secrets:
+        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
