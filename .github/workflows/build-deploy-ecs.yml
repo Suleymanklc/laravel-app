@@ -11,12 +11,15 @@ on:
 
 env:
   AWS_REGION: eu-central-1                   # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: laravel-acr           # set this to your Amazon ECR repository name
-  ECS_SERVICE: my-vpc                 # set this to your Amazon ECS service name
+  ECR_REPOSITORY_LARAVEL: laravel-api
+  ECR_REPOSITORY_NGINX: laravel-api             # set this to your Amazon ECR repository name
+  ECS_SERVICE_NGINX: laravel-nginx-service
+  ECS_SERVICE_LARAVEL: laravel-api-service                # set this to your Amazon ECS service name
   ECS_CLUSTER: laravel-ecs-cluster                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: my-vpc # set this to the path to your Amazon ECS task definition
-                                               # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME: MY_CONTAINER_NAME           # set this to the name of the container in the
+  ECS_TASK_DEFINITION_LARAVEL: laravel-task
+  ECS_TASK_DEFINITION_NGINX: laravel-nginx-task # set this to the path to your Amazon ECS task definitio                      # file, e.g. .aws/task-definition.json
+  CONTAINER_NAME_LARAVEL: laravel
+  CONTAINER_NAME_NGINX: nginx            # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
 
 permissions:
@@ -56,9 +59,9 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . -f Dockerfile.laravel
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_LARAVEL:$IMAGE_TAG . -f Dockerfile.laravel
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_LARAVEL:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY_LARAVEL:$IMAGE_TAG" >> $GITHUB_OUTPUT
     - name: Build, tag, and push Nginx Image to Amazon ECR
       id: build-image-nginx
       env:
@@ -68,23 +71,38 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . -f Dockerfile.nginx
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_NGINX:$IMAGE_TAG . -f Dockerfile.nginx
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_NGINX:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY_NGINX:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
+    - name: Fill in the new Laravel image ID in the Amazon ECS task definition
+      id: task-def-laravel
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: ${{ env.ECS_TASK_DEFINITION }}
-        container-name: ${{ env.CONTAINER_NAME }}
-        image: ${{ steps.build-image.outputs.image }}
+        task-definition: ${{ env.ECS_TASK_DEFINITION_LARAVEL }}
+        container-name: ${{ env.CONTAINER_NAME_LARAVEL }}
+        image: ${{ steps.build-image-laravel.outputs.image }}
 
+    - name: Deploy Amazon ECS Laravel task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def-laravel.outputs.task-definition }}
+        service: ${{ env.ECS_SERVICE_LARAVEL }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
+
+    - name: Fill in the new Nginx image ID in the Amazon ECS task definition
+      id: task-def-nginx
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_TASK_DEFINITION_NGINX }}
+        container-name: ${{ env.CONTAINER_NAME_NGINX }}
+        image: ${{ steps.build-image-nginx.outputs.image }}
+ 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: ${{ env.ECS_SERVICE }}
+        task-definition: ${{ steps.build-image-nginx.outputs.task-definition }}
+        service: ${{ env.ECS_SERVICE_NGINX }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
-        container-name: 

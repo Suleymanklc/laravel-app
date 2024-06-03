@@ -2,8 +2,17 @@ resource "aws_ecs_cluster" "ecs_cluster" {
   name = var.cluster_name
 }
 
-resource "aws_ecs_task_definition" "ecs_task" {
-  family                   = var.service_name
+resource "aws_ecs_task_definition" "ecs_task_laravel" {
+  family                   = "${var.service_name}-task"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = var.task_cpu
+  memory                   = var.task_memory
+
+  container_definitions = var.container_definitions
+}
+resource "aws_ecs_task_definition" "ecs_task_nginx" {
+  family                   = "${var.service_name}-nginx-task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.task_cpu
@@ -15,7 +24,7 @@ resource "aws_ecs_task_definition" "ecs_task" {
 resource "aws_ecs_service" "larevel" {
   name            = "${var.service_name}-api-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
-  task_definition = aws_ecs_task_definition.ecs_task.arn
+  task_definition = aws_ecs_task_definition.ecs_task_laravel.arn
   desired_count   = var.desired_count
 
   network_configuration {
@@ -28,7 +37,7 @@ resource "aws_ecs_service" "larevel" {
 resource "aws_ecs_service" "nginx" {
   name            = "${var.service_name}-nginx-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
-  task_definition = aws_ecs_task_definition.ecs_task.arn
+  task_definition = aws_ecs_task_definition.ecs_task_nginx.arn
   desired_count   = var.desired_count
 
   network_configuration {
