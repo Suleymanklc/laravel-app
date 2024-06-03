@@ -85,7 +85,7 @@ variable "enable_nat_gateway" {
 variable "enable_vpn_gateway" {
   description = "Flag to enable VPN gateway"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "vpc_tags" {

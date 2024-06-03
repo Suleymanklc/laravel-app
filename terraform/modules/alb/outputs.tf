@@ -2,12 +2,12 @@
 
 output "alb_arn" {
   description = "The ARN of the ALB"
-  value       = aws_lb.this.arn
+  value       = aws_lb.aws_lb.arn
 }
 
 output "target_group_arn" {
   description = "The ARN of the target group"
-  value       = aws_lb_target_group.this.arn
+  value       = aws_lb_target_group.aws_lb_target_group.arn
 }
 
 output "http_listener_arn" {

@@ -41,13 +41,12 @@ module "security_group" {
 }
 module "cert" {
   source = "./modules/cert"
-  domain_name = var.domain_name
-  subject_alternative_names = var.subject_alternative_names
   
 }
 module "alb" {
   source = "./modules/alb"
-  name              = "laravel-alb"
+  aws_lb_name              = "laravel-alb"
+  aws_lb_target_group_name = "laravel-alb-target"
   security_group_id = module.security_group.alb_sg_id
   subnets           = module.vpc.public_subnets
   vpc_id            = module.vpc.vpc_id

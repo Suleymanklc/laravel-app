@@ -4,7 +4,11 @@ variable "domain_name" {
   description = "The name of the ALB"
   type        = string
 }
-variable "name" {
+variable "aws_lb_target_group_name" {
+  description = "The name of the ALB"
+  type        = string
+}
+variable "aws_lb_name" {
   description = "The name of the ALB"
   type        = string
 }
