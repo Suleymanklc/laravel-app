@@ -1,6 +1,4 @@
 .DS_Store
-terraform/modules/cert/self_signed_cert.pem
-terraform/modules/cert/self_signed_key.pem
 terraform/.terraform/modules/modules.json
 terraform/.terraform.lock.hcl
 terraform/.terraform.tfstate.lock.info
