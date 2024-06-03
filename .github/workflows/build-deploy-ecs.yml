@@ -2,11 +2,6 @@ name: ECS Container Deploy
 
 on:
   workflow_call:
-    inputs:   
-      aws_region:
-        description: 'aws_region'
-        required: true
-        type: string
 
 
 env:
