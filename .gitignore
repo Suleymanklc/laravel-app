@@ -1,11 +1,6 @@
 .DS_Store
-terraform/.terraform/modules/modules.json
-terraform/.terraform.lock.hcl
-terraform/.terraform.tfstate.lock.info
-terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/5.52.0/darwin_arm64/LICENSE.txt
-terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/5.52.0/darwin_arm64/terraform-provider-aws_v5.52.0_x5
-terraform/.terraform/providers/registry.terraform.io/hashicorp/local/2.5.1/darwin_arm64/terraform-provider-local_v2.5.1_x5
-terraform/.terraform/providers/registry.terraform.io/hashicorp/null/3.2.2/darwin_arm64/terraform-provider-null_v3.2.2_x5
+terraform/.terraform/*
+terraform/.terraform/*
 terraform/terraform.tfstate.backup
 terraform/self_signed_cert.pem
 terraform/self_signed_key.pem
