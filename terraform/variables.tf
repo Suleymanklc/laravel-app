@@ -35,7 +35,7 @@ variable "task_memory" {
 variable "service_name" {
   description = "The name of the VPC"
   type        = string
-  default     = "my-vpc"
+  default     = "ecs"
 }
 variable "task_family" {
   description = "The name of the VPC"
