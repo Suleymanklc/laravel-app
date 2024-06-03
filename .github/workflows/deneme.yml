@@ -1,12 +1,9 @@
 name: ECS Container Deploy
 
 on:
-  workflow_call:
-    secrets:
-      AWS_ACCESS_KEY_ID:
-        required: true
-      AWS_SECRET_ACCESS_KEY:
-        required: true
+  push:
+    branches:
+      - main
 
 
 env:
@@ -30,15 +27,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+
     - name: Clone laravel-api
       id: clone_laravel_api
       run: |
           git clone https://github.com/joselfonseca/laravel-api.git
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-access-key-id: AKIA5FTZEF6UOSFMOHOL
+        aws-secret-access-key: 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
         aws-region: ${{ env.AWS_REGION }}
 
     - name: Login to Amazon ECR
@@ -57,11 +56,15 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . -f Dockerfile.laravel
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
     - name: Get current task definition
       id: get_task_definition
       run: |
-          aws ecs describe-task-definition --task-definition $ECS_TASK_DEFINITION  --region  $AWS_REGION | jq -r '.taskDefinition.taskDefinitionArn'
-          aws ecs describe-task-definition --task-definition your-task-definition-arn -region  $AWS_REGION > current_task_definition.json
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+          aws ecs describe-task-definition --task-definition $ECS_TASK_DEFINITION | jq -r '.taskDefinition.taskDefinitionArn'
+          aws ecs describe-task-definition --task-definition your-task-definition-arn > current_task_definition.json
           echo "::set-output name=current_task_definition::$(cat current_task_definition.json)"
     - name: Render Amazon ECS task definition
       id: render-laravel-container
