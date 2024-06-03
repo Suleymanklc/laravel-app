@@ -1,3 +1,20 @@
+variable "db_name" {
+  description = "The name of the db"
+  type        = string
+}
+variable "db_root_password" {
+  description = "The pass of the db"
+  type        = string
+}
+variable "db_user" {
+  description = "The user of the db"
+  type        = string
+}
+variable "db_password" {
+  description = "The pass of the db"
+  type        = string
+}
+
 variable "cluster_name" {
   description = "The name of the ECS cluster"
   type        = string

@@ -3,6 +3,22 @@ variable "cluster_name" {
   type        = string
   default     = ""
 }
+variable "db_name" {
+  description = "The name of the db"
+  type        = string
+}
+variable "db_root_password" {
+  description = "The pass of the db"
+  type        = string
+}
+variable "db_user" {
+  description = "The user of the db"
+  type        = string
+}
+variable "db_password" {
+  description = "The pass of the db"
+  type        = string
+}
 variable "ecr_name" {
   description = "The name of the ecr"
   type        = string

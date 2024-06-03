@@ -19,39 +19,45 @@ module "ecs" {
   task_family           = var.task_family
   task_cpu              = var.task_cpu
   task_memory           = var.task_memory
-    container_definitions = jsonencode([
+  service_name   = var.service_name
+  desired_count  = 1
+  subnets        = module.vpc.private_subnets
+  vpc_id         = module.vpc.vpc_id
+  db_name = var.db_name
+  db_password = var.db_password
+  db_root_password = var.db_root_password
+  db_user = var.db_user
+  container_definitions = jsonencode([
     {
-      name      = "laravel-api"
-      image     = "nginx"
-      cpu       = 10
-      memory    = 512
-      essential = true
+      name      = "laravel-app",
+      image     = "laravel",
+      essential = true,
+      environment = [
+        { name = "DB_HOST", value = "laravel-db" },
+        { name = "DB_PORT", value = "3306" },
+        { name = "DB_DATABASE", value = var.db_name },
+        { name = "DB_USERNAME", value = var.db_user },
+        { name = "DB_PASSWORD", value = var.db_password },
+        { name = "DB_HOST", value = "mysql" },
+        { name = "DB_PORT", value = "3306" },
+      ],
       portMappings = [
         {
           containerPort = 9000
           hostPort      = 9000
         }
       ]
-    },
-    {
-      name      = "nginx-service"
-      image     = "nginx"
-      cpu       = 10
-      memory    = 256
-      essential = true
-      portMappings = [
-        {
-          containerPort = 80
-          hostPort      = 80
-        }
-      ]
-    },
-    {
-      name      = "db"
-      image     = "mysql:8.0"
-      cpu       = 10
-      memory    = 256
-      essential = true
+    }, 
+       {
+      name      = "mysql",
+      image     = "mysql:8.0",
+      essential = true,
+      environment = [
+        { name = "MYSQL_DATABASE", value = var.db_name },
+        { name = "MYSQL_USER", value = var.db_user },
+        { name = "MYSQL_PASSWORD", value = var.db_password },
+        { name = "MYSQL_ROOT_PASSWORD", value = var.db_root_password }
+      ],
       portMappings = [
         {
           containerPort = 3306
@@ -60,10 +66,6 @@ module "ecs" {
       ]
     }
   ])
-  service_name   = var.service_name
-  desired_count  = 1
-  subnets        = module.vpc.private_subnets
-  vpc_id         = module.vpc.vpc_id
 }
 module "security_group" {
   source = "./modules/sg"
