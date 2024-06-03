@@ -41,7 +41,7 @@ jobs:
       #  run: terraform apply -auto-approve tfplan
       
   call-reusable-workflow:
-    uses: .github/workflows/build-deploy-ecs.yml
+    uses: ./.github/workflows/build-deploy-ecs.yml
     with:
       aws_region : ${{ env.aws_region }}
     secrets:
