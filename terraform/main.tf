@@ -19,15 +19,47 @@ module "ecs" {
   task_family           = var.task_family
   task_cpu              = var.task_cpu
   task_memory           = var.task_memory
-    container_definitions = jsonencode([{
-    name      = "my-container"
-    image     = "nginx"
-    essential = true
-    portMappings = [{
-      containerPort = 80
-      hostPort      = 80
-    }]
-  }])
+    container_definitions = jsonencode([
+    {
+      name      = "laravel-api"
+      image     = "nginx"
+      cpu       = 10
+      memory    = 512
+      essential = true
+      portMappings = [
+        {
+          containerPort = 9000
+          hostPort      = 9000
+        }
+      ]
+    },
+    {
+      name      = "nginx-service"
+      image     = "nginx"
+      cpu       = 10
+      memory    = 256
+      essential = true
+      portMappings = [
+        {
+          containerPort = 80
+          hostPort      = 80
+        }
+      ]
+    },
+    {
+      name      = "db"
+      image     = "mysql:8.0"
+      cpu       = 10
+      memory    = 256
+      essential = true
+      portMappings = [
+        {
+          containerPort = 3306
+          hostPort      = 3306
+        }
+      ]
+    }
+  ])
   service_name   = var.service_name
   desired_count  = 1
   subnets        = module.vpc.private_subnets
