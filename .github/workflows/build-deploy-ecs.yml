@@ -25,7 +25,7 @@ jobs:
   deploy:
     name: Deploy to ECS
     runs-on: ubuntu-latest
-    environment: production
+    environment: test
 
     steps:
     - name: Checkout
@@ -61,7 +61,7 @@ jobs:
       id: get_task_definition
       run: |
           
-          aws ecs describe-task-definition --task-definition $ECS_TASK_DEFINITION | jq -r '.taskDefinition.taskDefinitionArn' > current_task_definition.json
+          aws ecs describe-task-definition --task-definition $ECS_TASK_DEFINITION > current_task_definition.json
           echo "::set-output name=current_task_definition::$(cat current_task_definition.json)"
 
     - name: Fill in the new Laravel image ID in the Amazon ECS task definition
