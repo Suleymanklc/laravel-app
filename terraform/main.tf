@@ -42,6 +42,7 @@ module "security_group" {
 module "cert" {
   source = "./modules/cert"
   domain_name = var.domain_name
+  subject_alternative_names = var.subject_alternative_names
   
 }
 module "alb" {
@@ -53,7 +54,6 @@ module "alb" {
   target_group_port = 80
   listener_http_port = 80
   listener_https_port = 443
-  subject_alternative_names = [var.subject_alternative_names]
   domain_name = var.domain_name 
   certificate_arn = module.cert.arn
   depends_on = [ module.cert ]
