@@ -57,3 +57,10 @@ module "alb" {
   certificate_arn = module.cert.arn
   depends_on = [ module.cert ]
 }
+
+module "ecr" {
+
+  source = "./modules/ecr"
+  ecr_name = var.ecr_name
+  
+}

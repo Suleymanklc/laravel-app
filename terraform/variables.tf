@@ -3,6 +3,11 @@ variable "cluster_name" {
   type        = string
   default     = "my-vpc"
 }
+variable "ecr_name" {
+  description = "The name of the ecr"
+  type        = string
+  default     = "laravel-ecr"
+}
 variable "subject_alternative_names" {
   description = "The name of the ECS cluster"
   type        = string
