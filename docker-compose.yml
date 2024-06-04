@@ -8,14 +8,16 @@ services:
     ports:
       - "9000:9000"
     environment:
-      DB_HOST: db
-      DB_DATABASE: laravel
-      DB_USERNAME: laravel
-      DB_PASSWORD: laravel
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=laravel
+      - DB_USERNAME=laravel
+      - DB_PASSWORD=laravel
     networks:
       - app-network
   web:
-    image: pisko0808/nginx:latest
+    image: pisko0808/laravel-nginx:latest
     container_name: nginx
     restart: unless-stopped
     ports:
