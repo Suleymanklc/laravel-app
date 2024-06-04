@@ -4,3 +4,4 @@ terraform/.terraform/*
 terraform/terraform.tfstate.backup
 terraform/self_signed_cert.pem
 terraform/self_signed_key.pem
+terraform/.terraform.lock.hcl
