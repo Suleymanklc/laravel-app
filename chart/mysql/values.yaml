@@ -1,0 +1,6 @@
+auth:
+  rootPassword: "laravel"
+  createDatabase: true
+  database: "laravel"
+  username: "laravel"
+  password: "laravel"
