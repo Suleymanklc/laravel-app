@@ -27,7 +27,12 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.8.5
+          terraform_version: 1.8.5\
+      - name: Terraform Login
+        run: |
+            echo ${{ secrets.TF_CRED }} > ~/.terraform.d/credentials.tfrc.json 
+            terraform login
+        working-directory: ./terraform
       - name: Terraform Init
         run: terraform init
         working-directory: ./terraform
