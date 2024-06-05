@@ -14,6 +14,7 @@ on:
 
 
 env:
+  
   AWS_REGION: eu-central-1                   # set this to your preferred AWS region, e.g. us-west-1
   namespace: laravel             # set this to your Amazon ECR repository name            # set this to your Amazon ECS service name
   EKS_CLUSTER: laravel-eks-V8V64qfV                # set this to your Amazon ECS cluster name                   # file, e.g. .aws/task-definition.json
@@ -75,6 +76,11 @@ jobs:
         echo "image=$REPOSITORY/$IMAGE_NAME:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
     - name: Deploy Helm
+      env:
+        REGISTRY: ${{ steps.docker-login.outputs.registry }}
+        REPOSITORY: pisko0808
+        IMAGE_TAG: latest
+        IMAGE_NAME: laravel-php
       uses: bitovi/github-actions-deploy-eks-helm@v1.2.9
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -83,5 +89,6 @@ jobs:
         cluster-name: ${{ env.EKS_CLUSTER }}
         config-files: ./chart/values.yaml
         chart-path: ./chart/
+        values: image.tag=$IMAGE_TAG,image.repository=$REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
         namespace: laravel
         name: laravel
