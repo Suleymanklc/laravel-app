@@ -26,7 +26,7 @@ COPY --from=composer:2.6.5 /usr/bin/composer /usr/local/bin/composer
 
 # copy composer.json to workdir & install dependencies
 COPY composer.json ./
-RUN composer install
+#RUN composer install
 
 # Set the default command to run php-fpm
 CMD ["php-fpm"]
