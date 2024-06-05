@@ -67,7 +67,7 @@ jobs:
         ls -ltra
         cp ./Dockerfile ./laravel-api
         cd ./laravel-api
-        
+        ls -ltra
         docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG . -f Dockerfile
         docker tag $REPOSITORY:$IMAGE_TAG $REGISTRY/$REPOSITORY:$IMAGE_TAG
         docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
