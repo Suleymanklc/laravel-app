@@ -22,7 +22,7 @@ spec:
     spec:
       volumes:
         - name: app
-          value: {}
+          emptyDir: {}
         - name: nginx-vhost
           configMap:
             name: {{ include "laravelapi.fullname" . }}-nginx-vhost
@@ -34,10 +34,25 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        # Nginx Container
+        - name: php
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "cp -r /app/. /var/www/laravel"]
+          ports:
+            - name: tcp
+              containerPort: 9000
+          volumeMounts:
+            - name: app
+              mountPath: /var/www/laravel
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
         - name: nginx
           image: nginx:alpine
-          #image: "nginx:alpine"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -46,20 +61,7 @@ spec:
             - name: nginx-vhost
               mountPath: /etc/nginx/conf.d
             - name: app
-              mountPath: /var/www/app
-        - name: php
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: tcp
-              containerPort: 9000
-          volumeMounts:
-            - name: app
-              mountPath: /var/www/app
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+              mountPath: /var/www/laravel
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
