@@ -6,7 +6,9 @@ on:
       - main
 env:
   aws_region: eu-central-1
-
+  TF_CLOUD_ORGANIZATION: personaldemo-space0001
+  TF_WORKSPACE: demo   
+  TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 jobs:
   terraform_apply:
     runs-on: ubuntu-latest
@@ -25,18 +27,19 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.8.4
-
+          terraform_version: 1.8.5
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -backend-config="hostname=app.terraform.io" -backend-config="organization=$TF_CLOUD_ORGANIZATION" -backend-config="workspaces.name=$TF_WORKSPACE"
         working-directory: ./terraform
 
       - name: Terraform Plan 
         run: terraform plan -out=tfplan -var-file="laravel.tfvars"
         working-directory: ./terraform
+
       - name: Terraform Apply 
         run: terraform apply -var-file="laravel.tfvars" --auto-approve 
         working-directory: ./terraform
+
   eks_deploy:
     uses: ./.github/workflows/build-deploy-eks.yml
     needs: terraform_apply

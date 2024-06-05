@@ -75,6 +75,24 @@ jobs:
         docker push $REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
         echo "image=$REPOSITORY/$IMAGE_NAME:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
+    - name: Add NGINX Helm repo
+      run: helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+
+    - name: Update Helm repos
+      run: helm repo update
+
+    - name: Deploy Helm
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.9
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        cluster-name: ${{ env.EKS_CLUSTER }}
+        chart-path: ingress-nginx/ingress-nginx
+        namespace: ingress-nginx
+        values: controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-backend-protocol"=http
+        name: ingress-nginx
+
     - name: Deploy Helm
       env:
         REGISTRY: ${{ steps.docker-login.outputs.registry }}
