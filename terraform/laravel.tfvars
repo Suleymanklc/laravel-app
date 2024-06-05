@@ -10,11 +10,9 @@ vpc_tags = {
   Terraform = "true"
   Environment = "dev"
 }
-domain_name = "laravelmywork.com"
 cluster_name          = "laravel-ecs-cluster"
 task_cpu              = "256"
 task_memory           = "512"
-subject_alternative_names = "*.laravelmywork.com"
 service_name = "laravel"
 db_name = "laravel"
 db_password=  "laravel"
