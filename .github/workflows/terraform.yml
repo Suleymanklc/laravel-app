@@ -34,8 +34,8 @@ jobs:
       - name: Terraform Plan 
         run: terraform plan -out=tfplan -var-file="laravel.tfvars"
         working-directory: ./terraform
-      - name: Terraform Apply --auto-approve 
-        run: terraform plan -out=tfplan -var-file="laravel.tfvars"
+      - name: Terraform Apply 
+        run: terraform apply -out=tfplan -var-file="laravel.tfvars" --auto-approve 
         working-directory: ./terraform
   eks_deploy:
     uses: ./.github/workflows/build-deploy-eks.yml
