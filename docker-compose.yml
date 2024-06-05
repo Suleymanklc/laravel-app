@@ -2,7 +2,7 @@
 
 services:
   app:
-    image: pisko0808/laravel:latest
+    image: pisko0808/laravel-php:latest
     container_name: laravel
     restart: unless-stopped
     ports:
