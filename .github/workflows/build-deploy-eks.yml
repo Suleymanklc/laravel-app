@@ -50,7 +50,9 @@ jobs:
     - name: Login DockerHub
       id: docker-login
       run: |
-        echo ${{ secrets.DOCKER_PASSWORD }} |  docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        echo ${{ secrets.DOCKER_PASSWORD }} > dockerpass.txt
+        cat dockerpass.txt |  docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        rm -Rf dockerpass.txt
 
     - name: Build, tag, and push Laravel Image
       id: build-image
