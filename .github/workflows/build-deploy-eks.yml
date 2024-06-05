@@ -89,6 +89,5 @@ jobs:
         cluster-name: ${{ env.EKS_CLUSTER }}
         config-files: ./chart/values.yaml
         chart-path: ./chart/
-        values: image.tag=$IMAGE_TAG,image.repository=$REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
         namespace: laravel
         name: laravel
