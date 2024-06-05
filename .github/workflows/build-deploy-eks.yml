@@ -7,6 +7,10 @@ on:
         required: true
       AWS_SECRET_ACCESS_KEY:
         required: true
+      DOCKER_USERNAME:
+        required: true
+      DOCKER_PASSWORD:
+        required: true
 
 
 env:
