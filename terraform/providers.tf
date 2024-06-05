@@ -6,16 +6,14 @@ terraform {
     }
     local = {}
   }
+  backend "remote" {
+    hostname = "app.terraform.io"
+    organization = "personaldemo-space0001"
 
-  backend "http" {
-    address        = "https://api.tfstate.dev/github/v1"
-    lock_address   = "https://api.tfstate.dev/github/v1/lock"
-    unlock_address = "https://api.tfstate.dev/github/v1/lock"
-    lock_method    = "PUT"
-    unlock_method  = "DELETE"
-    username       = "Suleymanklc/laravel-app"
+    workspaces {
+      name = "demo"
+    }
   }
-  
   required_version = ">= 1.0.0"  # Specify the version of Terraform
 }
 
