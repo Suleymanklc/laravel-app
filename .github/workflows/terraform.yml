@@ -41,7 +41,7 @@ jobs:
       #   working-directory: ./terraform
        
   call-reusable-workflow:
-    uses: ./.github/workflows/build-deploy-ecs.yml
+    uses: ./.github/workflows/build-deploy-eks.yml
     needs: terraform
     secrets:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
