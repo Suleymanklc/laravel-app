@@ -63,15 +63,16 @@ jobs:
         REGISTRY: ${{ steps.docker-login.outputs.registry }}
         REPOSITORY: pisko0808
         IMAGE_TAG: latest
+        IMAGE_NAME: laravel-php
       run: |
         ls -ltra
         cp ./Dockerfile ./laravel-api
         cd ./laravel-api
         ls -ltra
         docker build -t laravel:$IMAGE_TAG . -f Dockerfile
-        docker tag laravel:$IMAGE_TAG $REPOSITORY/laravel:$IMAGE_TAG
-        docker push $REPOSITORY/laravel:$IMAGE_TAG
-        echo "image=$REPOSITORY/laravel:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        docker tag laravel:$IMAGE_TAG $REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
+        docker push $REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
+        echo "image=$REPOSITORY/$IMAGE_NAME:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
     - name: Deploy Helm
       uses: bitovi/github-actions-deploy-eks-helm@v1.2.9
