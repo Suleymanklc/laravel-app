@@ -14,8 +14,7 @@ module "ebs_csi_irsa_role" {
 
 
 locals {
-  cluster_name = "laravel-eks-${random_string.suffix.result}"
-  eks_user = ""
+  cluster_name = "laravel-eks-V8V64qfV"
 }
 
 resource "random_string" "suffix" {

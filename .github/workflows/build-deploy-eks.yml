@@ -1,0 +1,78 @@
+name: EKS Container Deploy
+
+on:
+  workflow_call:
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+
+
+env:
+  AWS_REGION: eu-central-1                   # set this to your preferred AWS region, e.g. us-west-1
+  namespace: laravel             # set this to your Amazon ECR repository name            # set this to your Amazon ECS service name
+  EKS_CLUSTER: laravel-eks-V8V64qfV                # set this to your Amazon ECS cluster name                   # file, e.g. .aws/task-definition.json
+  CONTAINER_NAME: laravel-app       # set this to the name of the container in the
+                                               # containerDefinitions section of your task definition
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy to EKS
+    runs-on: ubuntu-latest
+    environment: test
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Create Laravel project form joselfonseca/laravel-api
+      id: create_laravel_project
+      run: |
+          sudo apt update
+          sudo apt install php-cli unzip
+          cd ~
+          curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
+          HASH=`curl -sS https://composer.github.io/installer.sig`
+          php -r "if (hash_file('SHA384', '/tmp/composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+          sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+          composer create-project joselfonseca/laravel-api laravel-api
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Login DockerHub
+      id: docker-login
+      run: |
+         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build, tag, and push Laravel Image
+      id: build-image
+      env:
+        REGISTRY: ${{ steps.docker-login.outputs.registry }}
+        REPOSITORY: pisko0808
+        IMAGE_TAG: latest
+      run: |
+        cp ./Dockerfile ./laravel-api/
+        cd ./laravel-api/
+        docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG . -f Dockerfile
+        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+    - name: Deploy Helm
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.9
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        cluster-name: ${{ env.EKS_CLUSTER }}
+        config-files: ./chart/values.yaml
+        chart-path: ./chart/
+        namespace: laravel
+        name: laravel

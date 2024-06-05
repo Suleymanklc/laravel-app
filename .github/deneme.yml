@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   deploy:
-    name: Deploy to ECS
+    name: Deploy to EKS
     runs-on: ubuntu-latest
     environment: production
 
@@ -56,36 +56,16 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . -f Dockerfile.laravel
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-
-    - name: Get current task definition
-      id: get_task_definition
-      run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          sudo ./aws/install
-          aws ecs describe-task-definition --task-definition $ECS_TASK_DEFINITION | jq -r '.taskDefinition.taskDefinitionArn'
-          aws ecs describe-task-definition --task-definition your-task-definition-arn > current_task_definition.json
-          echo "::set-output name=current_task_definition::$(cat current_task_definition.json)"
-    - name: Render Amazon ECS task definition
-      id: render-laravel-container
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
+    - name: Deploy Helm
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.9
       with:
-        task-definition: ${{ steps.get_task_definition.outputs.current_task_definition }}
-        container-name: ${{ env.CONTAINER_NAME }}
-        image: ${{ steps.build-image.outputs.image }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+        cluster-name: mycluster
+        config-files: .github/values/dev.yaml
+        chart-path: chart/
+        namespace: dev
+        values: key1=value1,key2=value2
+        name: release_name
 
-    - name: Fill in the new Laravel image ID in the Amazon ECS task definition
-      id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: ${{ env.ECS_TASK_DEFINITION }}
-        container-name: ${{ env.CONTAINER_NAME }}
-        image: ${{ steps.build-image.outputs.image }}
-
-    - name: Deploy Amazon ECS Laravel task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.render-laravel-container.outputs.task-definition }}
-        service: ${{ env.ECS_SERVICE }}
-        cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: true
