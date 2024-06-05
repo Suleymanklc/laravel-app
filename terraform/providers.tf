@@ -6,7 +6,13 @@ terraform {
     }
     local = {}
   }
-  
+    backend "s3" {
+    bucket         	   = "tfstate"
+    key              	   = "state/terraform.tfstate"
+    region         	   = "eu-central-1"
+    encrypt        	   = true
+    dynamodb_table = "mycomponents_tf_lockid"
+  }
   required_version = ">= 1.0.0"  # Specify the version of Terraform
 }
 

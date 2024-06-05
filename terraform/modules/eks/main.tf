@@ -1,3 +1,10 @@
+resource "aws_s3_bucket" "tfstate_bucket" {
+  bucket  = "mtfstate"
+  tags    = {
+	Name          = "tfstate"
+	Environment    = "demo"
+  }
+}
 module "ebs_csi_irsa_role" {
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
@@ -10,6 +17,7 @@ module "ebs_csi_irsa_role" {
       namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
     }
   }
+  depends_on = [ module.eks, aws_s3_bucket.tfstate_bucket ]
 }
 
 
@@ -44,6 +52,7 @@ module "vpc" {
   private_subnet_tags = {
     "kubernetes.io/role/internal-elb" = 1
   }
+depends_on = [ aws_s3_bucket.tfstate_bucket  ]
 }
 
 module "eks" {
@@ -90,4 +99,6 @@ module "eks" {
       desired_size = 2
     }
   }
+      depends_on = [module.vpc,aws_s3_bucket.tfstate_bucket ]
+    
 }

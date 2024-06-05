@@ -1,6 +1,6 @@
 # Laravel Application
 
-Welcome to the Laravel Application repository! This project serves as a demonstration of deploying a Laravel application on AWS ECS using Terraform. It includes an Nginx web server, a MySQL database container, and an Application Load Balancer (ALB) for public access.
+Welcome to the Laravel Application repository! This projecat serves as a demonstration of deploying a Laravel application on AWS ECS using Terraform. It includes an Nginx web server, a MySQL database container, and an Application Load Balancer (ALB) for public access.
 
 ## Overview
 
@@ -22,6 +22,10 @@ Ensure you have the following prerequisites installed on your local machine:
 - [Terraform](https://www.terraform.io/downloads.html)
 - [Docker](https://www.docker.com/products/docker-desktop)
 
+  ```
+  aws eks update-kubeconfig --region eu-central-1  --name laravel-eks
+  ```
+
 ### Clone the Repository
 
 Clone this repository to your local machine using the following command:
@@ -29,3 +33,4 @@ Clone this repository to your local machine using the following command:
 ```bash
 git clone https://github.com/Suleymanklc/laravel-app.git
 cd laravel-app
+```
