@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  .dockerconfigjson: {{ .Values.regcred.secret }}
+kind: Secret
+metadata:
+  name: {{ include "laravelapi.fullname" . }}-regcred
+type: kubernetes.io/dockerconfigjson

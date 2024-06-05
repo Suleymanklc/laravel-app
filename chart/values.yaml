@@ -1,5 +1,6 @@
 
-
+regcred:
+  secret: ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogImNHbHphMjh3T0RBNE9tUmphM0pmY0dGMFgxOW9iM0Z5U0VkNk5VeG1iRzFxV2tKeGRXNUZUbVZ1U1dnMlVRPT0iCgkJfQoJfQp9
 replicaCount: 1
 
 image:
@@ -9,7 +10,7 @@ image:
   tag: "latest"
 
 imagePullSecrets: 
-  - name: regcred
+  - name: laravel-regcred
 nameOverride: ""
 fullnameOverride: ""
 
