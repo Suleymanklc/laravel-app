@@ -86,11 +86,12 @@ jobs:
         aws eks update-kubeconfig --region eu-central-1  --name laravel-eks
         sudo apt-get install -y kubectl
         kubectl create ns nginx-controller 
-        helm install nginx-controller  oci://registry-1.docker.io/bitnamicharts/nginx-ingress-controller -n nginx-controller
+        helm upgrade --install nginx-controller ingress-nginx/ingress-nginx \
+          --namespace ingress-nginx --create-namespace \
+          --set controller.service.type=LoadBalancer \
+          --set controller.service.externalTrafficPolicy=Local \
+          --set controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-type"="nlb"
         
-
-
-
 
     - name: Deploy Helm
       env:
@@ -108,3 +109,7 @@ jobs:
         chart-path: ./chart/
         namespace: laravel
         name: laravel
+
+    - name: Get Ingress URL for Laravel APP
+      run: |
+         kubectl get ing -o yaml -n laravel
