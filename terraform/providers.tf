@@ -6,14 +6,12 @@ terraform {
     }
     local = {}
   }
-  backend "remote" {
-    hostname = "app.terraform.io"
-    organization = "personaldemo-space0001"
-
-    workspaces {
-      name = "demo"
-    }
+  backend "s3" {
+    bucket = "statebucketfordemo"
+    key    = "statetf"
+    region = "eu-central-1"
   }
+  
   required_version = ">= 1.0.0"  # Specify the version of Terraform
 }
 
