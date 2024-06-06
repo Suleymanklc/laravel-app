@@ -1,14 +1,6 @@
 # Laravel Application
 
-Welcome to the Laravel Application repository! This projecat serves as a demonstration of deploying a Laravel application on AWS ECS using Terraform. It includes an Nginx web server, a MySQL database container, and an Application Load Balancer (ALB) for public access.
-
-## Overview
-
-This project showcases the deployment of a Laravel application on AWS ECS with the following components:
-
-- **Nginx**: Serves the Laravel application.
-- **MySQL**: Runs as a container in ECS.
-- **Application Load Balancer (ALB)**: Provides a public endpoint to access the Laravel application.
+Welcome to the Laravel Application repository! This projecat serves as a demonstration of deploying a Laravel application on AWS EKS using Terraform. It includes an Nginx web server and Laravel app as sidecar container
 
 ## Getting Started
 
@@ -18,15 +10,17 @@ Follow the steps below to set up and deploy the Laravel application:
 
 Ensure you have the following prerequisites installed on your local machine:
 
-- [AWS CLI](https://aws.amazon.com/cli/)
-- [Terraform](https://www.terraform.io/downloads.html)
-- [Docker](https://www.docker.com/products/docker-desktop)
+* [AWS CLI](https://aws.amazon.com/cli/)
+* [Terraform](https://www.terraform.io/downloads.html)
+* [Docker](https://www.docker.com/products/docker-desktop)
+* *AWS root user access key is used for demo purposes, but for production, IAM user and role policies are required*
+* [Helm]()
+* [Kubectl]()
+* [VSCode](https://code.visualstudio.com/)
+* Docker buildx
+* Docker compose
 
-  ```
-  aws eks update-kubeconfig --region eu-central-1  --name laravel-eks
-  ```
-
-### Clone the Repository
+* ### Clone the Repository
 
 Clone this repository to your local machine using the following command:
 
@@ -34,3 +28,35 @@ Clone this repository to your local machine using the following command:
 git clone https://github.com/Suleymanklc/laravel-app.git
 cd laravel-app
 ```
+
+* ### Local run
+
+```
+docker build -t laravel:latest . -f Dockerfile
+docker tag laravel:latest pisko0808/laravel:latest
+docker push pisko0808/laravel:latest
+```
+
+``docker-compose up -d -f docker-compose.yml``
+
+* ### Terraform backend s3 and modules
+
+Due to demo infrastructure there is no dynamo for lock managment
+
+```
+ backend "s3" {
+    bucket = "statebucketfordemo"
+    key    = "statetf"
+    region = "eu-central-1"
+  }
+```
+
+Since it is demo application all resources were not be modularised and approcahed keept simple
+
+* ### Github workflows
+
+.github folder includes workflows both helm and terraform infrastructure
+
+* ### chart folder
+
+Includes laravel applications and default yaml included all values since there are different no envrinments, default yaml is used.
