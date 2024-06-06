@@ -2,7 +2,7 @@
 
 module "eks" {
   source = "./modules/eks"
-
+  elb_name = var.elb_name
   region                   = var.region
   vpc_cidr                 = var.vpc_cidr
   azs                      = var.azs
@@ -19,13 +19,4 @@ module "eks" {
   node_group_min_size      = var.node_group_min_size
   node_group_max_size      = var.node_group_max_size
   node_group_desired_size  = var.node_group_desired_size
-}
-
-module "elb" {
-  source = "./modules/elb"
-
-  vpc_id            =  module.eks.vpc_id
-  availability_zones = var.availability_zones
-  elb_name           = var.elb_name
-  depends_on = [ module.eks ]
 }

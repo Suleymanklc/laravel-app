@@ -107,7 +107,7 @@ resource "aws_security_group" "elb_security_group" {
 
 resource "aws_elb" "k8s_elb" {
   name               = var.elb_name
-  availability_zones = var.availability_zones
+  availability_zones = module.vpc.azs
   security_groups    = [aws_security_group.elb_security_group.id]
 
   listener {
