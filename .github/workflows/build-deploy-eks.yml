@@ -81,11 +81,10 @@ jobs:
     - name: Update Helm repos
       run: helm repo update
 
-    - name: Deploy Helm
+    - name: Deploy Nginx controller Helm
       run: |
         aws eks update-kubeconfig --region eu-central-1  --name laravel-eks
         sudo apt-get install -y kubectl
-        kubectl create ns nginx-controller 
         helm upgrade --install nginx-controller ingress-nginx/ingress-nginx \
           --namespace ingress-nginx --create-namespace \
           --set controller.service.type=LoadBalancer \
@@ -93,7 +92,7 @@ jobs:
           --set controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-type"="nlb"
         
 
-    - name: Deploy Helm
+    - name: Deploy Laravel Helm
       env:
         REGISTRY: ${{ steps.docker-login.outputs.registry }}
         REPOSITORY: pisko0808

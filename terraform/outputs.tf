@@ -5,10 +5,10 @@ output "vpc_id" {
 
 output "private_subnet_ids" {
   description = "List of IDs of private subnets"
-  value       = var.private_subnet_cidrs
+  value       = var.private_subnets
 }
 
 output "public_subnet_ids" {
   description = "List of IDs of public subnets"
-  value       = var.public_subnet_cidrs
+  value       = var.public_subnets
 }

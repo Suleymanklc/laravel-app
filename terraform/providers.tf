@@ -4,7 +4,9 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
     }
+    
     local = {}
+    
   }
   backend "s3" {
     bucket = "statebucketfordemo"

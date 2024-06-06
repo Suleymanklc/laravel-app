@@ -1,96 +1,85 @@
-variable "cluster_name" {
-  description = "The name of the ECS cluster"
-  type        = string
-  default     = ""
-}
-variable "ecr_name" {
-  description = "The name of the ecr"
-  type        = string
-  default     = "laravel-ecr"
-}
-
-variable "vpc_name" {
-  description = "The name of the VPC"
-  type        = string
-  default     = ""
-}
-
-variable "task_cpu" {
-  description = "The name of the VPC"
-  type        = string
-  default     = ""
-}
-variable "task_memory" {
-  description = "The name of the VPC"
-  type        = string
-  default     = ""
-}
-variable "service_name" {
-  description = "The name of the ecs name"
-  type        = string
-  default     = "ecs"
-}
-variable "task_family" {
-  description = "The name of the task_family"
-  type        = string
-  default     = "laravel"
-}
-
-
-
-
-variable "alb_sg_name" {
-  description = "The name of the VPC"
-  type        = string
-  default     = "my-vpc"
-}
 variable "region" {
-  description = "The name of the Region"
+  description = "The AWS region to deploy to"
   type        = string
-  default     = "eu-central-1"
+}
+variable "vpc_name" {
+  description = "The AWS region to deploy to"
+  type        = string
 }
 
 variable "vpc_cidr" {
   description = "The CIDR block for the VPC"
   type        = string
-  default     = "10.0.0.0/16"
 }
 
-variable "availability_zones" {
-  description = "List of availability zones for the VPC"
+variable "azs" {
+  description = "A list of availability zones in the region"
   type        = list(string)
-  default     = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
 }
 
-variable "private_subnet_cidrs" {
-  description = "List of CIDR blocks for private subnets"
+variable "private_subnets" {
+  description = "A list of private subnet CIDR blocks"
   type        = list(string)
-  default     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 }
 
-variable "public_subnet_cidrs" {
-  description = "List of CIDR blocks for public subnets"
+variable "public_subnets" {
+  description = "A list of public subnet CIDR blocks"
   type        = list(string)
-  default     = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 }
 
 variable "enable_nat_gateway" {
-  description = "Flag to enable NAT gateway"
+  description = "Enable or disable NAT Gateway"
   type        = bool
-  default     = true
 }
 
-variable "enable_vpn_gateway" {
-  description = "Flag to enable VPN gateway"
+variable "single_nat_gateway" {
+  description = "Enable or disable single NAT Gateway"
   type        = bool
-  default     = false
 }
 
-variable "vpc_tags" {
-  description = "Tags for the VPC"
+variable "enable_dns_hostnames" {
+  description = "Enable or disable DNS hostnames in the VPC"
+  type        = bool
+}
+
+variable "public_subnet_tags" {
+  description = "Tags for public subnets"
   type        = map(string)
-  default     = {
-    Terraform   = "true"
-    Environment = "dev"
-  }
+  default     = {}
+}
+
+variable "private_subnet_tags" {
+  description = "Tags for private subnets"
+  type        = map(string)
+  default     = {}
+}
+
+variable "cluster_name" {
+  description = "The name of the EKS cluster"
+  type        = string
+}
+
+variable "cluster_version" {
+  description = "The version of the EKS cluster"
+  type        = string
+}
+
+variable "node_group_instance_types" {
+  description = "The instance types for the node group"
+  type        = list(string)
+}
+
+variable "node_group_min_size" {
+  description = "The minimum size of the node group"
+  type        = number
+}
+
+variable "node_group_max_size" {
+  description = "The maximum size of the node group"
+  type        = number
+}
+
+variable "node_group_desired_size" {
+  description = "The desired size of the node group"
+  type        = number
 }

@@ -1,22 +1,26 @@
-vpc_name = "laravel-private-vpc"
-ecr_name = "laravel-acr"
-vpc_cidr = "10.0.0.0/16"
-availability_zones = ["eu-central-1a", "eu-central-1b", "eu-central-1c"]
-private_subnet_cidrs = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-public_subnet_cidrs = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
-enable_nat_gateway = true
-enable_vpn_gateway = false
-vpc_tags = {
-  Terraform = "true"
-  Environment = "dev"
-}
-cluster_name          = "laravel-ecs-cluster"
-task_cpu              = "256"
-task_memory           = "512"
-service_name = "laravel"
-db_name = "laravel"
-db_password=  "laravel"
-db_root_password = "laravel"
-db_user= "laravel"
+region = "eu-central-1"
 
+vpc_cidr = "10.0.0.0/16"
+azs      = ["eu-central-1a", "eu-central-1b", "eu-central-1c"]
+
+private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+vpc_name = "laravel-vpc"
+enable_nat_gateway   = true
+single_nat_gateway   = true
+enable_dns_hostnames = true
+
+public_subnet_tags = {}
+
+private_subnet_tags = {
+  "kubernetes.io/role/internal-elb" = 1
+}
+
+cluster_name            = "laravel-eks"
+cluster_version         = "1.29"
+
+node_group_instance_types = ["t3.medium"]
+node_group_min_size       = 1
+node_group_max_size       = 3
+node_group_desired_size   = 2
 
