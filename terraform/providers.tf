@@ -13,7 +13,7 @@ terraform {
     key    = "statetf"
     region = "eu-central-1"
   }
-  
+
   required_version = ">= 1.0.0"  # Specify the version of Terraform
 }
 
