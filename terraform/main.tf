@@ -2,7 +2,6 @@
 
 module "eks" {
   source = "./modules/eks"
-  elb_name = var.elb_name
   region                   = var.region
   vpc_cidr                 = var.vpc_cidr
   azs                      = var.azs

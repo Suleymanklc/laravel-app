@@ -83,14 +83,3 @@ variable "node_group_desired_size" {
   description = "The desired size of the node group"
   type        = number
 }
-
-variable "availability_zones" {
-  description = "A list of availability zones for the ELB"
-  type        = list(string)
-}
-
-variable "elb_name" {
-  description = "The name of the ELB"
-  type        = string
-}
-

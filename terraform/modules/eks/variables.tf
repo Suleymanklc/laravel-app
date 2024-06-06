@@ -56,10 +56,6 @@ variable "public_subnet_tags" {
 }
 
 
-variable "elb_name" {
-  description = "The name of the ELB."
-  type        = string
-}
 
 variable "private_subnet_tags" {
   description = "Tags for private subnets"
