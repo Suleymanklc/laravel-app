@@ -82,17 +82,15 @@ jobs:
       run: helm repo update
 
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.9
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
-        cluster-name: ${{ env.EKS_CLUSTER }}
-        chart-repository: oci://registry-1.docker.io/
-        chart-path: bitnamicharts/nginx-ingress-controller
-        namespace: ingress-nginx
-        values: controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-backend-protocol"=http
-        name: ingress-nginx
+      run: |
+        aws eks update-kubeconfig --region eu-central-1  --name laravel-eks
+        sudo apt-get install -y kubectl
+        kubectl create ns nginx-controller 
+        helm install nginx-controller  oci://registry-1.docker.io/bitnamicharts/nginx-ingress-controller -n nginx-controller
+        
+
+
+
 
     - name: Deploy Helm
       env:
