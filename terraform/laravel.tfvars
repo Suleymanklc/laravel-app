@@ -24,5 +24,4 @@ node_group_min_size       = 1
 node_group_max_size       = 3
 node_group_desired_size   = 2
 
-availability_zones = ["eu-central-1a", "eu-central-1b", "eu-central-1c"]
 elb_name           = "laravel-elb"

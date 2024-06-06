@@ -24,7 +24,7 @@ module "eks" {
 module "elb" {
   source = "./modules/elb"
 
-  vpc_id            = module.eks.vpc_id
+  vpc_id            =  module.eks.vpc_id
   availability_zones = var.availability_zones
   elb_name           = var.elb_name
   depends_on = [ module.eks ]
