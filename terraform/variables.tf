@@ -6,6 +6,10 @@ variable "vpc_name" {
   description = "The AWS region to deploy to"
   type        = string
 }
+variable "elb_name" {
+  description = "elb_name"
+  type        = string
+}
 
 variable "vpc_cidr" {
   description = "The CIDR block for the VPC"
@@ -17,6 +21,9 @@ variable "azs" {
   type        = list(string)
 }
 
+variable "node_group_min_size" {
+  type = number
+}
 variable "private_subnets" {
   description = "A list of private subnet CIDR blocks"
   type        = list(string)
@@ -58,6 +65,10 @@ variable "cluster_name" {
   description = "The name of the EKS cluster"
   type        = string
 }
+variable "node_group_name" {
+  description = "The name of the EKS cluster"
+  type        = string
+}
 
 variable "cluster_version" {
   description = "The version of the EKS cluster"
@@ -69,10 +80,7 @@ variable "node_group_instance_types" {
   type        = list(string)
 }
 
-variable "node_group_min_size" {
-  description = "The minimum size of the node group"
-  type        = number
-}
+
 
 variable "node_group_max_size" {
   description = "The maximum size of the node group"

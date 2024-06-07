@@ -9,9 +9,10 @@ terraform {
     
   }
   backend "s3" {
-    bucket = "statebucketfordemo"
-    key    = "statetf"
+    bucket = "statebucketformytf"
+    key    = "tf-states"
     region = "eu-central-1"
+    shared_credentials_file = "~/.aws/credentials"
   }
 
   required_version = ">= 1.0.0"  # Specify the version of Terraform
