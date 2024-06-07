@@ -6,6 +6,10 @@ Welcome to the Laravel Application repository! This projecat serves as a demonst
 
 Follow the steps below to set up and deploy the Laravel application:
 
+**IAM user: Root user since it is demo project and including lots of stack**
+
+normally should use spesific IAM user with role, policy and group assigments
+
 ### Prerequisites
 
 Ensure you have the following prerequisites installed on your local machine:
@@ -56,6 +60,10 @@ Since it is demo application all resources were not be modularised and approcahe
 * ### Github workflows
 
 .github folder includes workflows both helm and terraform infrastructure
+
+**prerequirements:**
+
+![1717770394426](image/readme/1717770394426.png)
 
 * ### Chart folder
 
