@@ -10,6 +10,14 @@ variable "elb_name" {
   description = "elb_name"
   type        = string
 }
+variable "account_id" {
+  description = "account_id"
+  type        = string
+}
+variable "lb_ingress_policy_name" {
+  description = "lb_ingress_policy_name"
+  type        = string
+}
 
 
 variable "vpc_cidr" {
@@ -89,6 +97,10 @@ variable "node_group_max_size" {
 }
 
 variable "node_group_desired_size" {
+  description = "The desired size of the node group"
+  type        = number
+}
+variable "ec2_instance_name" {
   description = "The desired size of the node group"
   type        = number
 }

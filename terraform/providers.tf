@@ -4,7 +4,10 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
     }
-    
+     kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 2.0.1"
+    }
     local = {}
     
   }
@@ -15,9 +18,9 @@ terraform {
     shared_credentials_file = "~/.aws/credentials"
   }
 
-  required_version = ">= 1.0.0"  # Specify the version of Terraform
+  required_version = ">= 1.0.0"  
 }
 
 provider "aws" {
-  region = var.region  # Specify the AWS region, assuming 'region' is defined in variables.tf
+  region = var.region  
 }
