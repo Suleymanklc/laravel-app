@@ -102,5 +102,5 @@ variable "node_group_desired_size" {
 }
 variable "ec2_instance_name" {
   description = "The desired size of the node group"
-  type        = number
+  type        = string
 }

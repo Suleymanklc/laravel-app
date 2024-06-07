@@ -1,4 +1,12 @@
-{
+
+
+resource "aws_iam_policy" "loadbalancerpolicy"{
+
+  name        = "aws_iam_policy"
+  path        = "/"
+  description = "load balancer policy"
+
+  policy = jsonencode({
     "Version": "2012-10-17",
     "Statement": [
         {
@@ -216,4 +224,5 @@
             "Resource": "*"
         }
     ]
+})
 }

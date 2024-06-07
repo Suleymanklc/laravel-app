@@ -1,8 +1,3 @@
-resource "aws_iam_policy" "lb_controller_policy" {       
-    name = var.lb_ingress_policy_name
-    description = "IAM policy to allow aws ingress controller to create LBs"                                                                                          
-    policy = file("${path.module}/AWSLoadBalancerControllerIAMPolicy.json")         
-}
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
@@ -12,7 +7,7 @@ module "eks" {
   cluster_version = var.cluster_version
 
   cluster_endpoint_public_access = true
-  vpc_id     = module.vpc.vpc_id
+  vpc_id     = var.vpc_id
   subnet_ids = var.private_subnets
 
   cluster_addons = {
@@ -35,9 +30,8 @@ module "eks" {
 
   eks_managed_node_group_defaults = {
     ami_type = "AL2_x86_64"
-    iam_role_additional_policies = [
-      join("/", ["arn:aws:iam::${var.account_id}:policy", var.lb_ingress_policy_name])
-    ]
+    iam_role_additional_policies =  { "label" = var.policy_arn }
+    
   }
 
   eks_managed_node_groups = {
@@ -79,4 +73,17 @@ module "eks" {
   cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
 }
+}
+module "ebs_csi_irsa_role" {
+  source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+
+  role_name             = "${var.cluster_name}-ebs-csi"
+  attach_ebs_csi_policy = true
+
+  oidc_providers = {
+    ex = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
+    }
+  }
 }
