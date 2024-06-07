@@ -2,6 +2,8 @@
 
 Welcome to the Laravel Application repository! This projecat serves as a demonstration of deploying a Laravel application on AWS EKS using Terraform. It includes an Nginx web server and Laravel app as sidecar container
 
+![1717770954044](image/readme/1717770954044.png)
+
 ## Getting Started
 
 Follow the steps below to set up and deploy the Laravel application:
