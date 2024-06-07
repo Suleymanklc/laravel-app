@@ -95,6 +95,8 @@ serviceAccount:
 
 ##### IAM policy for service account
 
+needed for ALB ingress controller service account
+
 ![1717769385482](image/readme/1717769385482.png)
 
 ##### ALB eks ingres controller
