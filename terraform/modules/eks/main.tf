@@ -1,4 +1,3 @@
-
 module "ebs_csi_irsa_role" {
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
@@ -14,7 +13,7 @@ module "ebs_csi_irsa_role" {
 }
 
 
-resource "eks" "this" {
+ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "20.8.5"
 
@@ -22,6 +21,8 @@ resource "eks" "this" {
   cluster_version = var.cluster_version
 
   cluster_endpoint_public_access = true
+  vpc_id     = var.vpc_id
+  subnet_ids = var.subnet_ids
 
   cluster_addons = {
     coredns = {
@@ -32,7 +33,7 @@ resource "eks" "this" {
     }
     vpc-cni = {
       most_recent = true
-    }
+    }    
     aws-ebs-csi-driver = {
       service_account_role_arn = module.ebs_csi_irsa_role.iam_role_arn
       most_recent              = true
@@ -41,16 +42,13 @@ resource "eks" "this" {
 
   enable_cluster_creator_admin_permissions = true
 
-  vpc_id     = module.vpc.vpc_id
-  subnet_ids = module.vpc.private_subnets
-
   eks_managed_node_group_defaults = {
     ami_type = "AL2_x86_64"
   }
 
   eks_managed_node_groups = {
-    one = {
-      name = "laravel"
+    default = {
+      name = var.node_group_name
 
       instance_types = var.node_group_instance_types
 
@@ -60,4 +58,3 @@ resource "eks" "this" {
     }
   }
 }
- 

@@ -1,7 +1,6 @@
 resource "aws_elb" "this" {
   name               = var.elb_name
   availability_zones = var.availability_zones
-  instances          = var.instance_ids
 
   listener {
     instance_port     = 80
@@ -10,6 +9,12 @@ resource "aws_elb" "this" {
     lb_protocol       = "HTTP"
   }
 
+  listener {
+    instance_port     = 443
+    instance_protocol = "HTTPS"
+    lb_port           = 443
+    lb_protocol       = "HTTPS"
+  }
   health_check {
     target              = "HTTP:80/"
     interval            = 30
