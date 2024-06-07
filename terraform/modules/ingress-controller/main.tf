@@ -12,7 +12,7 @@ provider "helm" {
     host                   = var.endpoint
     cluster_ca_certificate = var.kubeconfig-certificate-authority-data
     exec {
-        api_version = "client.authentication.k8s.io/v1beta1"
+        api_version = "client.authentication.k8s.io/v1"
         command     = "aws"
         args = [
             "eks",
@@ -31,7 +31,7 @@ resource "helm_release" "aws-ingress-controller" {
   chart      = "aws-load-balancer-controller"
   create_namespace = true
   namespace = "ingress-controller"
-  version = "1.4.4"
+  version = "1.8.1"
 
   set {
     name = "vpcId"

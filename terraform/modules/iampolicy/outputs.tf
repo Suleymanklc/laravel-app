@@ -1,4 +1,4 @@
-output "arn" {
+output "name" {
   description = "arn id"
-  value       = aws_iam_policy.loadbalancerpolicy.arn
+  value       = aws_iam_policy.loadbalancerpolicy.name
 }

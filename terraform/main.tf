@@ -33,7 +33,8 @@ module "eks" {
   region = var.region
   lb_ingress_policy_name = var.lb_ingress_policy_name
   account_id = var.account_id
-  policy_arn = module.policy.arn
+  policy_name = module.policy.name
+  user_id = var.user_id
 }
 
 

@@ -30,7 +30,7 @@ module "eks" {
 
   eks_managed_node_group_defaults = {
     ami_type = "AL2_x86_64"
-    iam_role_additional_policies =  { "label" = var.policy_arn }
+   # iam_role_additional_policies =  { "label" = var.policy_arn }
     
   }
 
@@ -43,34 +43,8 @@ module "eks" {
       instance_types = ["t3.medium"]
       capacity_type  = "SPOT"
   }
-    node_security_group_additional_rules = {
-    ingress_self_all = {
-      description = "Node to node all ports/protocols"
-      protocol    = "-1"
-      from_port   = 0
-      to_port     = 0
-      type        = "ingress"
-      self        = true
-    }
-    egress_all = {
-      description      = "Node all egress"
-      protocol         = "-1"
-      from_port        = 0
-      to_port          = 0
-      type             = "egress"
-      cidr_blocks      = ["0.0.0.0/0"]
-      ipv6_cidr_blocks = ["::/0"]
-    }
-    ingress_cluster_to_node_all_traffic = {
-      description                   = "Cluster API to Nodegroup all traffic"
-      protocol                      = "-1"
-      from_port                     = 0
-      to_port                       = 0
-      type                          = "ingress"
-      source_cluster_security_group = true
-    }
-  }
-  cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+
+
 
 }
 }
@@ -86,4 +60,20 @@ module "ebs_csi_irsa_role" {
       namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
     }
   }
+}
+
+module "iam_eks_ingress_role" {
+  source    = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  role_name = "my-app"
+
+  role_policy_arns = {
+    policy = "arn:aws:iam::${var.user_id}:policy/${var.policy_name}"
+  }
+
+  oidc_providers = {
+    one = {
+      provider_arn               = "module.eks.oidc_provider_arn"
+      namespace_service_accounts = ["laravel:ingress_alb_sa"]
+  }
+}
 }

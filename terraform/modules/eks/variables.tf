@@ -23,8 +23,11 @@ variable "private_subnets" {
 variable "region" {
   description = "AWS region."
 }
-variable "policy_arn" {
+variable "policy_name" {
   description = "AWS region."
+}
+variable "user_id" {
+  description = "user id."
 }
 
 
