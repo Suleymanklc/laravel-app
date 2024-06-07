@@ -23,20 +23,12 @@ variable "private_subnets" {
 variable "region" {
   description = "AWS region."
 }
-variable "policy_name" {
+variable "lb_ingress_policy_name" {
   description = "AWS region."
 }
+
+
+
 variable "user_id" {
-  description = "user id."
-}
-
-
-
-variable "lb_ingress_policy_name" {
-  description = "ALB ingress controller policy"
-
-}
-
-variable "account_id" {
   description = "AWS account id"
 }

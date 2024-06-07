@@ -64,10 +64,10 @@ module "ebs_csi_irsa_role" {
 
 module "iam_eks_ingress_role" {
   source    = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  role_name = "my-app"
+  role_name = "ingress_alb_role"
 
   role_policy_arns = {
-    policy = "arn:aws:iam::${var.user_id}:policy/${var.policy_name}"
+    policy = "arn:aws:iam::${var.user_id}:policy/${var.lb_ingress_policy_name}"
   }
 
   oidc_providers = {

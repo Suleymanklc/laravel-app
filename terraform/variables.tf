@@ -10,14 +10,7 @@ variable "elb_name" {
   description = "elb_name"
   type        = string
 }
-variable "account_id" {
-  description = "account_id"
-  type        = string
-}
-variable "lb_ingress_policy_name" {
-  description = "lb_ingress_policy_name"
-  type        = string
-}
+
 
 
 variable "vpc_cidr" {
