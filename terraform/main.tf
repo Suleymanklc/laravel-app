@@ -85,7 +85,3 @@ module "elb" {
   elb_name          = var.elb_name
   availability_zones = var.azs
 }
-resource "aws_instance" "myvm" {
- ami           = "unknown"
- instance_type = "unknown"
-}
