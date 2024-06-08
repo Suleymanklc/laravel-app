@@ -6,8 +6,6 @@ on:
       - main
 env:
   aws_region: eu-central-1
-  TF_CLOUD_ORGANIZATION: personaldemo-space0001
-  TF_WORKSPACE: demo   
   TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 jobs:
   terraform_apply:

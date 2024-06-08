@@ -13,7 +13,7 @@ terraform {
   }
   backend "s3" {
     bucket = "statebucketformytf"
-    key    = "env:/demo/tf-states"
+    key    = "tf-states"
     region = "eu-central-1"
     shared_credentials_file = "~/.aws/credentials"
   }
