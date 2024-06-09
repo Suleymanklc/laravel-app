@@ -86,7 +86,9 @@ please check: chart/templates/deployment.yaml
 
 ![1717968059081](image/readme/1717968059081.png)
 
-![1717966350379](image/readme/1717966350379.png)
+grab LB adress of the controller from the action step
+
+![1717969905865](image/readme/1717969905865.png)
 
 ##### Destroy terraform resources after review is done by manually triggering relevant action
 
