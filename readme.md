@@ -84,6 +84,8 @@ please check: chart/templates/deployment.yaml
 
 **ip will be publised at the results of below run**
 
+![1717968059081](image/readme/1717968059081.png)
+
 ![1717966350379](image/readme/1717966350379.png)
 
 ##### Destroy terraform resources after review is done by manually triggering relevant action
