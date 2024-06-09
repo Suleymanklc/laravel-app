@@ -29,9 +29,3 @@ module "eks" {
   region = var.region
   user_id = var.user_id
 }
-
-
-module "tls" {
-  source = "./modules/tls"
-     
-}
