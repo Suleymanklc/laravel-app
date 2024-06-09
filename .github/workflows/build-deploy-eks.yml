@@ -111,5 +111,5 @@ jobs:
 
     - name: Get Ingress URL for Laravel APP
       run: |
-         k get service -n kube-system
+         kubectl get service -n kube-system | grep nginx
          kubectl get ing -oyaml -n laravel
