@@ -12,12 +12,6 @@ module "vpc" {
   public_subnets = var.public_subnets
   region = var.region
 }
-data "aws_eks_cluster" "eks-cluster" {
-  name = var.cluster_name
-  depends_on = [
-    module.eks
-  ]
-}
 
 module "eks" {
   source = "./modules/eks"
