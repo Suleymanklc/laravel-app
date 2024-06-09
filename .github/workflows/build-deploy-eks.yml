@@ -79,20 +79,18 @@ jobs:
       run: helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
     - name: Update Helm repos
-      run: helm repo update
+      run: helm repo update 
 
     - name: Deploy Nginx controller Helm
       run: |
         aws eks update-kubeconfig --region eu-central-1  --name laravel-eks
         sudo apt-get install -y kubectl
-        helm repo add eks https://aws.github.io/eks-charts
-        kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master"
-        helm upgrade -i aws-load-balancer-controller \
-          eks/aws-load-balancer-controller -n kube-system \
-          --set clusterName=laravel-eks \
-          --set serviceAccount.create=false \
-          --set serviceAccount.name=laravel
-        
+        curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+        chmod 700 get_helm.sh
+        ./get_helm.sh
+        helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+        helm repo update
+        helm install nginx-ingress -n kube-system  ingress-nginx/ingress-nginx        
 
     - name: Deploy Laravel Helm
       env:
@@ -113,4 +111,5 @@ jobs:
 
     - name: Get Ingress URL for Laravel APP
       run: |
-         kubectl get ing -o yaml -n laravel
+         k get service -n kube-system
+         kubectl get ing -oyaml -n laravel
