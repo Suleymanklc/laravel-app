@@ -25,6 +25,7 @@ Ensure you have the following prerequisites installed on your local machine:
 * [VSCode](https://code.visualstudio.com/)
 * Docker buildx
 * Docker compose
+* dockerhub account needed for image pull secret.
 
 * ### Clone the Repository
 
@@ -101,18 +102,18 @@ needed for ALB ingress controller service account
 
 ![1717769385482](image/readme/1717769385482.png)
 
-##### ALB eks ingres controller
+##### Nginx ingres controller
 
 ***.github/workflows/build-deploy-eks.yml***
 
 ```
-        aws eks update-kubeconfig --region eu-central-1  --name laravel-eks
-        sudo apt-get install -y kubectl
-        helm repo add eks https://aws.github.io/eks-charts
-        kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master"
-        helm upgrade -i aws-load-balancer-controller \
-          eks/aws-load-balancer-controller -n kube-system \
-          --set clusterName=laravel-eks \
-          --set serviceAccount.create=false \
-          --set serviceAccount.name=laravel
+span
 ```
+
+##### Set laravelmywork.com with load balancer public IP as below within your local etc/hosts
+
+![1717966350379](image/readme/1717966350379.png)
+
+##### Destroy terraform resources after review is done by manually triggering relevant action
+
+![1717966128622](image/readme/1717966128622.png)
