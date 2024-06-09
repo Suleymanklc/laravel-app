@@ -22,4 +22,5 @@ module "eks" {
   private_subnets = module.vpc.private_subnets
   region = var.region
   user_id = var.user_id
+  depends_on = [ module.vpc ]
 }
