@@ -16,7 +16,7 @@ fullnameOverride: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
-  create: true
+  create: false
   # Annotations to add to the service account
   annotations: 
    eks.amazonaws.com/role-arn: arn:aws:iam::905418387368:role/ingress_alb_role
@@ -49,7 +49,7 @@ ingress:
     kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: aa86a5e1a97f24f459d5d663443c0b71-1312950241.eu-central-1.elb.amazonaws.com
+    - host: laravelmywork.com
       paths:
         - path: /
           pathType: ImplementationSpecific

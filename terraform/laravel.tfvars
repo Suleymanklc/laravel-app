@@ -25,3 +25,4 @@ node_group_max_size       = 3
 node_group_desired_size   = 2
 ec2_instance_name = "laravel"
 user_id = "905418387368"
+alb_name = "laravel-alb"

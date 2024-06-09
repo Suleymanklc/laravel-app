@@ -23,9 +23,6 @@ variable "private_subnets" {
 variable "region" {
   description = "AWS region."
 }
-variable "lb_ingress_policy_name" {
-  description = "AWS region."
-}
 
 
 

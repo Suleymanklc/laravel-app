@@ -26,6 +26,9 @@ variable "azs" {
 variable "node_group_min_size" {
   type = number
 }
+variable "alb_name" {
+  type = string
+}
 variable "private_subnets" {
   description = "A list of private subnet CIDR blocks"
   type        = list(string)

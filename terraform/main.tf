@@ -1,10 +1,6 @@
 
 
 
-module "iampolicy" {
- source = "./modules/iampolicy"
-  
-}
 module "vpc" {
   source = "./modules/vpc"
   vpc_cidr = var.vpc_cidr
@@ -31,16 +27,11 @@ module "eks" {
   public_subnets = module.vpc.public_subnets
   private_subnets = module.vpc.private_subnets
   region = var.region
-  lb_ingress_policy_name = module.iampolicy.name
   user_id = var.user_id
 }
 
 
-module "ingress-controller" {
-  source = "./modules/ingress-controller"
-  cluster_name = var.cluster_name
-  lb_ingress_policy_name = module.iampolicy.name
-  vpc_id = module.vpc.vpc_id
-  endpoint = data.aws_eks_cluster.eks-cluster.endpoint
-  kubeconfig-certificate-authority-data = base64decode(data.aws_eks_cluster.eks-cluster.certificate_authority.0.data)
+module "tls" {
+  source = "./modules/tls"
+     
 }

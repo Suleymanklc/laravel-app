@@ -42,6 +42,9 @@ module "eks" {
 
       instance_types = ["t3.medium"]
       capacity_type  = "SPOT"
+      labels = {
+            nodetype = "laravel"
+        }
   }
 
 
@@ -62,18 +65,3 @@ module "ebs_csi_irsa_role" {
   }
 }
 
-module "iam_eks_ingress_role" {
-  source    = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  role_name = "ingress_alb_role"
-
-  role_policy_arns = {
-    policy = "arn:aws:iam::${var.user_id}:policy/${var.lb_ingress_policy_name}"
-  }
-
-  oidc_providers = {
-    one = {
-      provider_arn               = "module.eks.oidc_provider_arn"
-      namespace_service_accounts = ["laravel:ingress_alb_sa"]
-  }
-}
-}
