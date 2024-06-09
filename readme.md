@@ -72,7 +72,7 @@ Includes laravel applications and default yaml included all values since there a
 
 ###### Important
 
-***laravel application is running with Nginx server as sidecar since laravel is not exposing 9000 as http and requires additional web sever***
+***laravel application is running with Nginx server as sidecar since laravel is not exposing 9000 as http and requires additional web sever. Although php artisan can serves too nginx is better approach for production**
 
 please check: chart/templates/deployment.yaml
 
