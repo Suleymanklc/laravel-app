@@ -109,5 +109,11 @@ jobs:
 
     - name: Get Ingress URL for Laravel APP
       run: |
-         kubectl get service -n kube-system | grep nginx
-         kubectl get ing -oyaml -n laravel
+         sudo apt-get install jq
+         dns=`kubectl get svc nginx-ingress-ingress-nginx-controller  -n kube-system -o json | jq -r '.status.loadBalancer.ingress[0].hostname'`
+         echo "IP ADRESS\n"
+         ping $dns -t 1
+         echo "\n"
+         echo "PLEASE set values at your local /etc/hosts"
+         echo "\n"
+         echo "EXAMPLE: 23.23.24.22 laravelmywork.com"

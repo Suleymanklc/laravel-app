@@ -78,39 +78,11 @@ Includes laravel applications and default yaml included all values since there a
 
 please check: chart/templates/deployment.yaml
 
-### Ingress Controller ALB networking
-
-##### Service account for EKS
-
-```
-chart/values.yaml
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Annotations to add to the service account
-  annotations: 
-   eks.amazonaws.com/role-arn: arn:aws:iam::905418387368:role/ingress_alb_role
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
-
-```
-
-##### IAM policy for service account
-
-needed for ALB ingress controller service account
-
-![1717769385482](image/readme/1717769385482.png)
-
-##### Nginx ingres controller
-
-***.github/workflows/build-deploy-eks.yml***
-
-```
-span
-```
-
 ##### Set laravelmywork.com with load balancer public IP as below within your local etc/hosts
+
+**domain name : laravelmywork.com(ingress domain))**
+
+**ip will be publised at the results of below run**
 
 ![1717966350379](image/readme/1717966350379.png)
 
