@@ -109,7 +109,7 @@ jobs:
 
     - name: Get Ingress URL for Laravel APP
       run: |
-         sudo apt-get install jq
+         sudo apt-get install jq -y
          dns=`kubectl get svc nginx-ingress-ingress-nginx-controller  -n kube-system -o json | jq -r '.status.loadBalancer.ingress[0].hostname'`
          echo "IP ADRESS\n"
          ping $dns -t 1
